@@ -3,4 +3,10 @@
 #include <stdarg.h>
 
 /**
-*_printf - 
+* _printf - this function prints anything
+*/
+
+int _printf(void)
+{
+	return (0);
+}
