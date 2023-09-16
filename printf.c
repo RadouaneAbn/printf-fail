@@ -42,6 +42,10 @@ int _printf(const char *format, ...)
 						c++;
 					}
 					break;
+				case 'i':
+					tmp_n = va_arg(args, int);
+					c += print_d(tmp_n);
+					break;
 				case 'd':
 					tmp_n = va_arg(args, int);
 					c += print_d(tmp_n);
