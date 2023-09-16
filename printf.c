@@ -9,6 +9,7 @@ int print_d(int n);
 
 /**
 * _printf - this function prints anything
+*@format: the string
 */
 
 int _printf(const char *format, ...)
