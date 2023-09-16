@@ -4,20 +4,28 @@
 #include <stdlib.h> 
 #include <stdarg.h>
 
-int print_i(int n);
-int print_d(int n);
+int def(va_list args);
+int print_c(va_list args);
+int print_s(va_list args);
+int print_i(va_list args);
+int print_d(va_list args);
 
 /**
 * _printf - this function prints anything
-*@format: the string
 */
 
 int _printf(const char *format, ...)
 {
 	va_list args;
 	int i, j, c = 0, tmp_n;
-	char *s;
-	char a;
+
+	data op[] = {
+	{'s', print_s},
+	{'c', print_c},
+	{'d', print_d},
+	{'i', print_i},
+	{'%', def},
+	};
 
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
@@ -26,51 +34,53 @@ int _printf(const char *format, ...)
 			write(1, &format[i], 1), c++;
 		else
 		{
-			i++;
-			switch (format[i])
+			for (j = 0; j < 5; j++)
 			{
-				case 'c':
-					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
-					break;
-				case 's':
-					j = 0;
-					s = va_arg(args, char *);
-					while (s[j])
-					{
-						write(1, &s[j], 1);
-						j++;
-						c++;
-					}
-					break;
-				case 'i':
-					tmp_n = va_arg(args, int);
-					c += print_i(tmp_n);
-					break;
-				case 'd':
-					tmp_n = va_arg(args, int);
-					c += print_d(tmp_n);
-					break;
-				case '%':
-					write(1, &format[i], 1);
-					c++;
-					break;
-				default:
-					write(1, &format[i - 1], 1);
-					write(1, &format[i], 1);
-					c += 2;
-					break;
-			c++;
+				if (format[i + 1] == op[j].s)
+				{
+					tmp_n = op[j].f(args);
+					i += 2;
+					c += tmp_n;
+				}
 			}
+			write(1, &format[i], 1);
+			c++;
 		}
 	}
 	va_end(args);
 	return (c);
 }
 
-int print_i(int n)
+int def(va_list args)
 {
+	char tmp = va_arg(args, int);
+
+	if (tmp == '%')
+		write(1, &tmp, 1);
+	return (1);
+}
+
+int print_s(va_list args)
+{
+	int i;
+	char *s = va_arg(args, char*);
+
+	for (i = 0; s[i]; i++)
+		write(1, &s[i], 1);
+	return (i);
+}
+
+int print_c(va_list args)
+{
+	char c = va_arg(args, int);
+
+	write(1, &c, 1);
+	return (1);
+}
+
+int print_i(va_list args)
+{
+	int n = va_arg(args, int);
 	int m, count = 0, i, flag = 0;
 	char *A;
 
@@ -99,8 +109,9 @@ int print_i(int n)
 	return(count);
 }
 
-int print_d(int n)
+int print_d(va_list args)
 {
+	int n = va_arg(args, int);
 	int m, count = 0, i, flag = 0;
         char *A;
 
