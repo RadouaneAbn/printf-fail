@@ -4,6 +4,7 @@
 #include <stdlib.h> 
 #include <stdarg.h>
 
+int print_i(int n);
 int print_d(int n);
 
 /**
@@ -44,7 +45,7 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 					tmp_n = va_arg(args, int);
-					c += print_d(tmp_n);
+					c += print_i(tmp_n);
 					break;
 				case 'd':
 					tmp_n = va_arg(args, int);
@@ -67,7 +68,7 @@ int _printf(const char *format, ...)
 	return (c);
 }
 
-int print_d(int n)
+int print_i(int n)
 {
 	int m, count = 0, i, flag = 0;
 	char *A;
@@ -95,4 +96,34 @@ int print_d(int n)
 		write(1, &A[i], 1);
 	free(A);
 	return(count);
+}
+
+int print_d(int n)
+{
+	int m, count = 0, i, flag = 0;
+        char *A;
+
+        for (m = n; m != 0; count++)
+                m /= 10;
+        if (n < 0)
+        {
+                flag = 1;
+                n *= -1;
+        }
+        A = (char *)malloc(count + flag);
+        if (A == NULL)
+                return (0);
+
+        for (i = count + flag - 1; i >= 0; i--)
+        {
+                A[i] = n % 10 + '0';
+                n /= 10;
+        }
+        if (flag == 1)
+                A[0] = '-';
+        i = 0;
+        for (; i <= count; i++)
+                write(1, &A[i], 1);
+        free(A);
+        return(count);
 }
