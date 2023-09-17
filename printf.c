@@ -241,7 +241,7 @@ int _print_adresse(void *p)
 	unsigned long int i = (unsigned long int) p;
 
 	if (p == NULL)
-		return (write(1, "(null)", 6));
+		return (-1);
 	c += write(1, "0x", 2);
 	c += _num_char(i, 'x', 0);
 
