@@ -10,6 +10,7 @@ int print_d(int n);
 int _num_char(unsigned int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(int n, char cs);
+int _print_char(char c);
 
 /**
  * _printf - this function prints anything
@@ -26,6 +27,8 @@ int _printf(const char *format, ...)
 	char *s;
 	char a;
 
+	if (!format)
+		return (-1);
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
@@ -43,8 +46,16 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
+					if (c)
+					{
+						write(1, &a, 1);
+						c++;
+					}
+					else
+					{
+						write(1, "(null)", 6);
+						c += 6;
+					}
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -160,6 +171,23 @@ int _num_char(unsigned int n, char cs, int flag)
 }
 
 /**
+ * _print_char - print a character
+ * @c: the character
+ * Return: 1 if char is not empty
+ *	0 if else
+ */
+
+int _print_char(char c)
+{
+	if (c)
+	{
+		write(1, &c, 1);
+		return (1);
+	}
+	return (0);
+}
+
+/**
  * _print_str - print an array of characters
  * @s: the array (string)
  * Return: the number of characters
@@ -167,14 +195,11 @@ int _num_char(unsigned int n, char cs, int flag)
 
 int _print_str(char *s)
 {
-	int i;
+	int i = 0;
 
 	if (s == NULL)
-	{
 		write(1, "(null)", 6);
-		return (0);
-	}
-	for (i = 0; s[i]; i++)
+	for (; s[i]; i++)
 		write(1, &s[i], 1);
 	return (i);
 }
