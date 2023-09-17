@@ -82,7 +82,8 @@ int _printf(const char *format, ...)
 					c += _num_char(tmp_n, 'b', 0);
 					break;
 				case 'S':
-
+					s = va_arg(arg, char*);
+					c += _print_nonprintable(s);_
 				case '%':
 					write(1, &format[i], 1);
 					c++;
