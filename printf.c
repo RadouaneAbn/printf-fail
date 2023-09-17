@@ -220,6 +220,7 @@ int _print_nonprintable(char *s)
 	{
 		if (str[i] < 32 || str[i] >= 127)
 		{
+			_num_char(s[i], 'X',0)';
 			write(1, "\\x0", 4);
 		}
 		else
