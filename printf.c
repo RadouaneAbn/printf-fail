@@ -45,8 +45,7 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
+					c += _print_char(a);
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -159,6 +158,23 @@ int _num_char(unsigned int n, char cs, int flag)
 	_print_str(A);
 	free(A);
 	return (c + flag);
+}
+
+/**
+ * _print_char - print a character
+ * @c: the character
+ * Return: 1 if char is not empty
+ *	0 if else
+ */
+
+int _print_char(char c)
+{
+	if (c)
+	{
+		write(1, &c, 1);
+		return (1);
+	}
+	return (0);
 }
 
 /**
