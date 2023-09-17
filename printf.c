@@ -235,4 +235,12 @@ int _print_nonprintable(char *s)
 	}
 	return (i);
 }
-
+/**
+*_print_adresse - print the adresse
+*@p: the address memory
+*Return: printed char
+*/
+int _print_adresse(void *p)
+{
+	unsigned long int i = (unsigned int p);
+	_non_p
