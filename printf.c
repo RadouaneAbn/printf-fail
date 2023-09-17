@@ -214,12 +214,13 @@ int _print_nonprintable(char *s)
 {
 	int i;
 
-	if (str == NULL)
-		str = "(null)";
-	for (i = 0; str[i]; i++)
+	if (s == NULL)
+		s = "(null)";
+	for (i = 0; s[i]; i++)
 	{
-		if (str[i] < 32 || str[i] >= 127)
+		if (s[i] < 32 || s[i] >= 127)
 		{
+			(int)s[i];
 			_num_char(s[i], 'X',0)';
 			write(1, "\\x0", 4);
 		}
