@@ -221,4 +221,9 @@ int _print_nonprintable(char *s)
 		if (str[i] < 32 || str[i] >= 127)
 		{
 			write(1, "\\x0", 4);
-		}	
+		}
+		else
+		 	_write(1, &s[i], 1);
+	}
+	return (i);
+}
