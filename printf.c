@@ -7,7 +7,7 @@
 
 int print_i(int n);
 int print_d(int n);
-int _num_char(unsigned int n, char cs, int flag);
+int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(int n, char cs);
 int _print_char(char c);
@@ -135,9 +135,9 @@ int _num_check(int n, char cs)
  * Return: the number of characters printed
  */
 
-int _num_char(unsigned int n, char cs, int flag)
+int _num_char(unsigned long int n, char cs, int flag)
 {
-	unsigned int m, num;
+	unsigned long int m, num;
 	int c = 0, i, bf = 0;
 	char *A, *F = "diuxXob";
 	int base[7] = {10, 10, 10, 16, 16, 8, 2};
@@ -229,6 +229,7 @@ int _print_nonprintable(char *s)
 	}
 	return (c);
 }
+
 /**
 *_print_adresse - print the adresse
 *@p: the address memory
@@ -236,9 +237,13 @@ int _print_nonprintable(char *s)
 */
 int _print_adresse(void *p)
 {
+	int c = 0;
 	unsigned long int i = (unsigned long int) p;
 
 	if (p == NULL)
 		return (0);
-	return (_num_char(i, 'X', 0));
+	c += write(1, "0x", 2);
+	c += _num_char(i, 'x', 0);
+
+	return (c);
 }
