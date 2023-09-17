@@ -216,4 +216,6 @@ int _print_nonprintable(char *s)
 
 	if (str == NULL)
 		str = "(null)";
+	for (i = 0; str[i]; i++)
+	{
 
