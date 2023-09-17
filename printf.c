@@ -218,7 +218,10 @@ int _print_nonprintable(char *s)
 	int i;
 
 	if (s == NULL)
-		s = "(null)";
+	{
+		write(1, "(null)", 6);
+		return (6);
+	}
 	for (i = 0; s[i]; i++)
 	{
 		if (s[i] < 32 || s[i] >= 127)
