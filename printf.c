@@ -46,7 +46,10 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					c += write(1, &a, 1);
+					if (write(1, &a, 1) < 0)
+						c--;
+					else
+						c++;
 					break;
 				case 's':
 					s = va_arg(args, char *);
