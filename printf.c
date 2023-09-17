@@ -209,4 +209,9 @@ int _print_str(char *s)
 *Return: number of  printed char
 */
 int _print_nonprintable(char *s)
+{
+	int i;
+
+	if (str == NULL)
+		str = "(null)";
 
