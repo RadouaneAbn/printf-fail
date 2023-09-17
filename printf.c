@@ -208,4 +208,5 @@ int _print_str(char *s)
 *@s: non printable char
 *Return: number of  printed char
 */
+int _print_nonprintable(char *s)
 
