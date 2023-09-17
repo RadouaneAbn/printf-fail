@@ -46,16 +46,8 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					if (c)
-					{
-						write(1, &a, 1);
-						c++;
-					}
-					else
-					{
-						write(1, "(null)", 6);
-						c += 6;
-					}
+					write(1, &a, 1);
+					c++;
 					break;
 				case 's':
 					s = va_arg(args, char *);
