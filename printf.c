@@ -174,7 +174,7 @@ int _print_str(char *s)
 	if (s == NULL)
 	{
 		write(1, "(null)", 6);
-		return (-1);
+		return (6);
 	}
 	for (i = 0; s[i]; i++)
 		write(1, &s[i], 1);
