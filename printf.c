@@ -218,4 +218,5 @@ int _print_nonprintable(char *s)
 		str = "(null)";
 	for (i = 0; str[i]; i++)
 	{
-
+		if (str[i] < 32 || str[i] >= 127)
+		
