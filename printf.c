@@ -169,14 +169,11 @@ int _num_char(unsigned int n, char cs, int flag)
 
 int _print_str(char *s)
 {
-	int i;
+	int i = 0;
 
 	if (s == NULL)
-	{
 		write(1, "(null)", 6);
-		return (6);
-	}
-	for (i = 0; s[i]; i++)
+	for (; s[i]; i++)
 		write(1, &s[i], 1);
 	return (i);
 }
