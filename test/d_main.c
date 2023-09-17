@@ -9,6 +9,7 @@
  */
 int main(void)
 {
+	_printf("%d\n", 'A');
 	_printf("% red %");
 	_printf("% red %");
 

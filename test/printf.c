@@ -26,6 +26,8 @@ int _printf(const char *format, ...)
 	char *s;
 	char a;
 
+	if (format == NULL)
+		return (-1);
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
