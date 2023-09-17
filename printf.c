@@ -25,7 +25,9 @@ int _printf(const char *format, ...)
 	int i, c = 0;
 	char *s;
 	char a;
-	
+
+	if (!format)
+		return (-1);
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
@@ -95,9 +97,17 @@ int _printf(const char *format, ...)
 	return (c);
 }
 
+/**
+ * _num_check - convert a negative number to positive
+ * @n: the number
+ * @cs: conversion specifiers
+ * Return: the return of _num_char
+ */
+
 int _num_check(int n, char cs)
 {
 	int flag = 0;
+
 	if (n < 0)
 	{
 		flag = 1;
@@ -106,7 +116,16 @@ int _num_check(int n, char cs)
 	return (_num_char(n, cs, flag));
 }
 
-int _num_char(unsigned int n, char cs,int flag)
+/**
+ * _num_char - convert a unsigned integer to string
+ * @n: the integer
+ * @cs: conversion specifiers
+ * @flag: 0 if number is positive
+ *	1 if number is negative
+ * Return: the number of characters printed
+ */
+
+int _num_char(unsigned int n, char cs, int flag)
 {
 	unsigned int m, num;
 	int c = 0, i, bf = 0;
@@ -139,12 +158,19 @@ int _num_char(unsigned int n, char cs,int flag)
 		A[0] = '-';
 	_print_str(A);
 	free(A);
-	return (c + flag);	
+	return (c + flag);
 }
+
+/**
+ * _print_str - print an array of characters
+ * @s: the array (string)
+ * Return: the number of characters
+ */
 
 int _print_str(char *s)
 {
 	int i;
+
 	if (s == NULL)
 	{
 		write(1, "(null)", 6);
@@ -152,4 +178,5 @@ int _print_str(char *s)
 	}
 	for (i = 0; s[i]; i++)
 		write(1, &s[i], 1);
+	return (i);
 }

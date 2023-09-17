@@ -1,141 +1,156 @@
 #include "main.h"
 #include <unistd.h>
 #include <string.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <stdarg.h>
+#include <stdio.h>
 
-int def(va_list args);
-int print_c(va_list args);
-int print_s(va_list args);
-int print_i(va_list args);
-int print_d(va_list args);
+int print_i(int n);
+int print_d(int n);
+int _num_char(unsigned int n, char cs, int flag);
+int _print_str(char *s);
+int _num_check(int n, char cs);
 
 /**
-* _printf - this function prints anything
-*/
+ * _printf - this function prints anything
+ * @format: the string
+ * Return: 0
+ */
 
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i, j, c = 0, tmp_n;
-
-	data op[] = {
-	{'s', print_s},
-	{'c', print_c},
-	{'d', print_d},
-	{'i', print_i},
-	{'%', def},
-	};
+	int tmp_d;
+	unsigned int tmp_n;
+	int i, c = 0;
+	char *s;
+	char a;
 
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
-		if (format[i] != '%')
+		if (format[i] != '%' && format[i])
 			write(1, &format[i], 1), c++;
+		else if (format[i] == '%' && !format[i + 1])
+		{
+			write(1, &format[i], 1);
+			break;
+		}
 		else
 		{
-			for (j = 0; j < 5; j++)
+			i++;
+			switch (format[i])
 			{
-				if (format[i + 1] == op[j].s)
-				{
-					tmp_n = op[j].f(args);
-					i += 2;
-					c += tmp_n;
-				}
-			}
-			write(1, &format[i], 1);
+				case 'c':
+					a = va_arg(args, int);
+					write(1, &a, 1);
+					c++;
+					break;
+				case 's':
+					s = va_arg(args, char *);
+					c += _print_str(s);
+					break;
+				case 'i':
+					tmp_d = va_arg(args, int);
+					c += _num_check(tmp_d, 'i');
+					break;
+				case 'd':
+					tmp_d = va_arg(args, int);
+					c += _num_check(tmp_d, 'd');
+					break;
+				case 'u':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'u', 0);
+					break;
+				case 'o':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'o', 0);
+					break;
+				case 'x':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'x', 0);
+					break;
+				case 'X':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'X', 0);
+					break;
+				case 'b':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'b', 0);
+					break;
+				case '%':
+					write(1, &format[i], 1);
+					c++;
+					break;
+				default:
+					write(1, &format[i - 1], 1);
+					write(1, &format[i], 1);
+					c += 2;
+					break;
 			c++;
+			}
 		}
 	}
 	va_end(args);
 	return (c);
 }
 
-int def(va_list args)
+int _num_check(int n, char cs)
 {
-	char tmp = va_arg(args, int);
-
-	if (tmp == '%')
-		write(1, &tmp, 1);
-	return (1);
-}
-
-int print_s(va_list args)
-{
-	int i;
-	char *s = va_arg(args, char*);
-
-	for (i = 0; s[i]; i++)
-		write(1, &s[i], 1);
-	return (i);
-}
-
-int print_c(va_list args)
-{
-	char c = va_arg(args, int);
-
-	write(1, &c, 1);
-	return (1);
-}
-
-int print_i(va_list args)
-{
-	int n = va_arg(args, int);
-	int m, count = 0, i, flag = 0;
-	char *A;
-
-	for (m = n; m != 0; count++)
-		m /= 10;
+	int flag = 0;
 	if (n < 0)
 	{
 		flag = 1;
 		n *= -1;
 	}
-	A = (char *)malloc(count + flag);
+	return (_num_char(n, cs, flag));
+}
+
+int _num_char(unsigned int n, char cs,int flag)
+{
+	unsigned int m, num;
+	int c = 0, i, bf = 0;
+	char *A, *F = "diuxXob";
+	int base[7] = {10, 10, 10, 16, 16, 8, 2};
+
+	while (cs != F[bf])
+		bf++;
+	for (m = n; m; c++)
+		m /= base[bf];
+
+	A = (char *)malloc(c + flag);
+
 	if (A == NULL)
 		return (0);
-	
-	for (i = count + flag - 1; i >= 0; i--)
+
+	for (i = c + flag - 1; i >= 0; i--)
 	{
-		A[i] = n % 10 + '0';
-		n /= 10;
+		num = n % base[bf];
+		if (num >= 10)
+			if (cs == 'X')
+				A[i] = 'A' + num - 10;
+			else
+				A[i] = 'a' + num - 10;
+		else
+			A[i] = '0' + num;
+		n /= base[bf];
 	}
 	if (flag == 1)
 		A[0] = '-';
-	i = 0;
-	for (; i <= count; i++)
-		write(1, &A[i], 1);
+	_print_str(A);
 	free(A);
-	return(count);
+	return (c + flag);	
 }
 
-int print_d(va_list args)
+int _print_str(char *s)
 {
-	int n = va_arg(args, int);
-	int m, count = 0, i, flag = 0;
-        char *A;
-
-        for (m = n; m != 0; count++)
-                m /= 10;
-        if (n < 0)
-        {
-                flag = 1;
-                n *= -1;
-        }
-        A = (char *)malloc(count + flag);
-        if (A == NULL)
-                return (0);
-
-        for (i = count + flag - 1; i >= 0; i--)
-        {
-                A[i] = n % 10 + '0';
-                n /= 10;
-        }
-        if (flag == 1)
-                A[0] = '-';
-        i = 0;
-        for (; i <= count; i++)
-                write(1, &A[i], 1);
-        free(A);
-        return(count);
+	int i;
+	if (s == NULL)
+	{
+		write(1, "(null)", 6);
+		return (0);
+	}
+	for (i = 0; s[i]; i++)
+		write(1, &s[i], 1);
+	return(i);
 }
