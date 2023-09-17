@@ -26,14 +26,16 @@ int _printf(const char *format, ...)
 	char *s;
 	char a;
 
-	if (format == NULL)
-		return (0);
-
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
 		if (format[i] != '%' && format[i])
 			write(1, &format[i], 1), c++;
+		else if (format[i] == '%' && !format[i + 1])
+		{
+			write(1, &format[i], 1);
+			break;
+		}
 		else
 		{
 			i++;
