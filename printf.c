@@ -75,6 +75,7 @@ int _printf(const char *format, ...)
 					c += _num_char(tmp_n, 'x', 0);
 					break;
 				case 'p':
+						
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'X', 0);
@@ -87,6 +88,8 @@ int _printf(const char *format, ...)
 					s = va_arg(args, char *);
 					c += _print_nonprintable(s);
 					break;
+				case 'p':
+					c += _print_adresse(va_args(args, void *);
 				case '%':
 					write(1, &format[i], 1);
 					c++;
@@ -244,6 +247,7 @@ int _print_adresse(void *p)
 {
 	if (p == NULL)
 		return (0);
-	unsigned long int i = (unsigned int p);
+	unsigned long int i = (unsigned int) p;
+
 	_non_char(i, 'X', 0);
 }
