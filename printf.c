@@ -184,7 +184,7 @@ int _num_char(unsigned long int n, char cs, int flag)
 
 int _print_str(char *s)
 {
-	int i;
+	int i = 0;
 
 	if (s == NULL)
 	{
