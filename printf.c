@@ -69,6 +69,10 @@ int _printf(const char *format, ...)
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'X', 0);
 					break;
+				case 'b':
+					tmp_n = va_arg(args, unsigned int);
+					c += _num_char(tmp_n, 'b', 0);
+					break;
 				case '%':
 					write(1, &format[i], 1);
 					c++;
