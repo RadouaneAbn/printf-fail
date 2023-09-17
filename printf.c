@@ -242,8 +242,8 @@ int _print_adresse(void *p)
 
 	if (p == NULL)
 	{
-		write(1, "(null)", 6);
-		return (6);
+		write(1, "(nil)", 5);
+		return (5);
 	}
 	c += write(1, "0x", 2);
 	c += _num_char(i, 'x', 0);
