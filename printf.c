@@ -46,8 +46,15 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
+					if (a == "")
+					{
+						write(1, "\0", 1);
+					}
+					else
+					{
+						write(1, &a, 1);
+						c++;
+					}	
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -203,3 +210,9 @@ int _print_str(char *s)
 		write(1, &s[i], 1);
 	return (i);
 }
+/**
+*_print_nonprintable - print non prinable char
+*@s: non printable char
+*Return: number of  printed char
+*/
+

@@ -10,6 +10,7 @@ int print_d(int n);
 int _num_char(unsigned int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(int n, char cs);
+int _print_char(char c);
 
 /**
  * _printf - this function prints anything
@@ -45,8 +46,15 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
+					if (a == '\0')
+					{
+						write(1, "", 1);
+					}
+					else
+					{
+						write(1, &a, 1);
+						c++;
+					}	
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -132,6 +140,11 @@ int _num_char(unsigned int n, char cs, int flag)
 	char *A, *F = "diuxXob";
 	int base[7] = {10, 10, 10, 16, 16, 8, 2};
 
+	if (n == 0)
+	{
+		write(1, "0", 1);
+		return (1);
+	}
 	while (cs != F[bf])
 		bf++;
 	for (m = n; m; c++)
@@ -162,6 +175,23 @@ int _num_char(unsigned int n, char cs, int flag)
 }
 
 /**
+ * _print_char - print a character
+ * @c: the character
+ * Return: 1 if char is not empty
+ *	0 if else
+ */
+
+int _print_char(char c)
+{
+	if (c)
+	{
+		write(1, &c, 1);
+		return (1);
+	}
+	return (0);
+}
+
+/**
  * _print_str - print an array of characters
  * @s: the array (string)
  * Return: the number of characters
@@ -174,6 +204,7 @@ int _print_str(char *s)
 	if (s == NULL)
 	{
 		write(1, "(null)", 6);
+		return (6);
 	}
 	for (i = 0; s[i]; i++)
 		write(1, &s[i], 1);
