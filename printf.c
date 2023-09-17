@@ -133,6 +133,11 @@ int _num_char(unsigned int n, char cs, int flag)
 	char *A, *F = "diuxXob";
 	int base[7] = {10, 10, 10, 16, 16, 8, 2};
 
+	if (n == 0)
+	{
+		write(1, "0", 1);
+		return (1);
+	}
 	while (cs != F[bf])
 		bf++;
 	for (m = n; m; c++)
