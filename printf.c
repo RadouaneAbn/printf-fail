@@ -82,8 +82,9 @@ int _printf(const char *format, ...)
 					c += _num_char(tmp_n, 'b', 0);
 					break;
 				case 'S':
-					s = va_arg(arg, char*);
+					s = va_arg(args, char *);
 					c += _print_nonprintable(s);
+					break;
 				case '%':
 					write(1, &format[i], 1);
 					c++;
@@ -222,11 +223,10 @@ int _print_nonprintable(char *s)
 		if (s[i] < 32 || s[i] >= 127)
 		{
 			 write(1, "\\x0", 4);
-			(int)s[i];
-			_num_char(s[i], 'X',0)';
+			_num_char(s[i], 'X',0);
 		}
 		else
-		 	_write(1, &s[i], 1);
+		 	write(1, &s[i], 1);
 	}
 	return (i);
 }
