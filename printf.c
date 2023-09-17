@@ -74,6 +74,7 @@ int _printf(const char *format, ...)
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'x', 0);
 					break;
+				case 'p':
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'X', 0);
@@ -234,3 +235,4 @@ int _print_nonprintable(char *s)
 	}
 	return (i);
 }
+
