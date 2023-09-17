@@ -49,11 +49,15 @@ int _printf(const char *format, ...)
 				case 'c':
 					a = va_arg(args, int);
 					write(1, &a, 1);
-					c++;	
+					c++;
 					break;
 				case 's':
 					s = va_arg(args, char *);
 					c += _print_str(s);
+					break;
+				case 'S':
+					s = va_arg(args, char *);
+					c += _print_nonprintable(s);
 					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
@@ -82,10 +86,6 @@ int _printf(const char *format, ...)
 				case 'b':
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'b', 0);
-					break;
-				case 'S':
-					s = va_arg(args, char *);
-					c += _print_nonprintable(s);
 					break;
 				case 'p':
 					c += _print_adresse(va_arg(args, void *));
@@ -210,40 +210,49 @@ int _print_str(char *s)
 	}
 	for (i = 0; s[i]; i++)
 	{
-		if (s[i] < 32 && s[i] >= 127)
-		{
-			write(1, "\\x", 2);
-			
-		}
 		write(1, &s[i], 1);
 	}
 	return (i);
 }
+
 /**
-*_print_nonprintable - print non prinable char
-*@s: non printable char
-*Return: number of  printed char
+* _print_nonprintable - print non prinable char
+* @s: non printable char
+* Return: number of  printed char
 */
+
 int _print_nonprintable(char *s)
 {
-	int i;
+	int i, j, tmp, n, c = 0;
+	char hex[2] = "00";
 
 	if (s == NULL)
 	{
 		write(1, "(null)", 6);
 		return (6);
 	}
-	for (i = 0; s[i]; i++)
+	for (i = 0; s[i]; i++, c++)
 	{
-		if (s[i] < 32 || s[i] >= 127)
+		if ((s[i] < 32 || s[i] > 126) && s[i] != '\\')
 		{
-			 write(1, "\\x0", 4);
-			_num_char((unsigned int)s[i], 'X',0);
+			write(1, "\\x", 2);
+			tmp = s[i];
+			for (j = 1; tmp > 0; j--)
+			{
+				n = tmp % 16;
+				if ((tmp % 16) >= 10)
+					hex[j] = n + 'A' - 10;
+				else if ((tmp % 16) < 10)
+					hex[j] = n + '0';
+				tmp /= 16;
+			}
+			write(1, hex, 2);
+			c++;
 		}
 		else
-		 	write(1, &s[i], 1);
+			write(1, &s[i], 1);
 	}
-	return (i);
+	return (c);
 }
 /**
 *_print_adresse - print the adresse
@@ -253,6 +262,7 @@ int _print_nonprintable(char *s)
 int _print_adresse(void *p)
 {
 	unsigned long int i = (unsigned long int) p;
+
 	if (p == NULL)
 		return (0);
 	return (_num_char(i, 'X', 0));
