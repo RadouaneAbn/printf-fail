@@ -224,7 +224,7 @@ int _print_nonprintable(char *s)
 		if (s[i] < 32 || s[i] >= 127)
 		{
 			 write(1, "\\x0", 4);
-			_num_char(s[i], 'X',0);
+			_num_char((unsigned int)s[i], 'X',0);
 		}
 		else
 		 	write(1, &s[i], 1);
