@@ -242,5 +242,8 @@ int _print_nonprintable(char *s)
 */
 int _print_adresse(void *p)
 {
+	if (p == NULL)
+		return (0);
 	unsigned long int i = (unsigned int p);
-	_non_p
+	_non_char(i, 'X', 0);
+}
