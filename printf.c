@@ -177,23 +177,6 @@ int _num_char(unsigned int n, char cs, int flag)
 }
 
 /**
- * _print_char - print a character
- * @c: the character
- * Return: 1 if char is not empty
- *	0 if else
- */
-
-int _print_char(char c)
-{
-	if (c)
-	{
-		write(1, &c, 1);
-		return (1);
-	}
-	return (0);
-}
-
-/**
  * _print_str - print an array of characters
  * @s: the array (string)
  * Return: the number of characters
@@ -209,9 +192,7 @@ int _print_str(char *s)
 		return (6);
 	}
 	for (i = 0; s[i]; i++)
-	{
 		write(1, &s[i], 1);
-	}
 	return (i);
 }
 
@@ -220,37 +201,31 @@ int _print_str(char *s)
 * @s: non printable char
 * Return: number of  printed char
 */
-
 int _print_nonprintable(char *s)
 {
-	int i, j, tmp, n, c = 0;
-	char hex[2] = "00";
+	int i, tmp, c = 0;
 
 	if (s == NULL)
+		return (write(1, "(null)", 6));
+
+	for (i = 0; s[i]; i++)
 	{
-		write(1, "(null)", 6);
-		return (6);
-	}
-	for (i = 0; s[i]; i++, c++)
-	{
-		if ((s[i] < 32 || s[i] > 126) && s[i] != '\\')
+		if (s[i] < 32 || s[i] >= 127)
 		{
-			write(1, "\\x", 2);
 			tmp = s[i];
-			for (j = 1; tmp > 0; j--)
+			if (tmp > 15)
 			{
-				n = tmp % 16;
-				if ((tmp % 16) >= 10)
-					hex[j] = n + 'A' - 10;
-				else if ((tmp % 16) < 10)
-					hex[j] = n + '0';
-				tmp /= 16;
+				c += write(1, "\\x", 2);
+				c += _num_char(s[i], 'X', 0);
 			}
-			write(1, hex, 2);
-			c++;
+			else
+			{
+				c += write(1, "\\x0", 3);
+				c += _num_char(s[i], 'X', 0);
+			}
 		}
 		else
-			write(1, &s[i], 1);
+			c += write(1, &s[i], 1);
 	}
 	return (c);
 }
