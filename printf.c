@@ -46,8 +46,7 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					if (write(1, &a, 1) >= 0)
-						c++;
+					c += write(1, &a, 1);
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -200,6 +199,13 @@ int _print_str(char *s)
 		return (6);
 	}
 	for (i = 0; s[i]; i++)
+	{
+		if (s[i] < 32 && s[i] >= 127)
+		{
+			write(1, "\\x", 2);
+			
+		}
 		write(1, &s[i], 1);
+	}
 	return (i);
 }
