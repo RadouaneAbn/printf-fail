@@ -46,9 +46,7 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					if (write(1, &a, 1) < 0)
-						c--;
-					else
+					if (write(1, &a, 1) >= 0)
 						c++;
 					break;
 				case 's':
