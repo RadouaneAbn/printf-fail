@@ -12,6 +12,7 @@ int _print_str(char *s);
 int _num_check(int n, char cs);
 int _print_char(char c);
 int _print_nonprintable(char *s);
+int _print_adresse(void *p);
 
 /**
  * _printf - this function prints anything
@@ -74,8 +75,6 @@ int _printf(const char *format, ...)
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'x', 0);
 					break;
-				case 'p':
-						
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'X', 0);
@@ -89,7 +88,8 @@ int _printf(const char *format, ...)
 					c += _print_nonprintable(s);
 					break;
 				case 'p':
-					c += _print_adresse(va_args(args, void *);
+					c += _print_adresse(va_arg(args, void *));
+					break;
 				case '%':
 					write(1, &format[i], 1);
 					c++;
@@ -245,9 +245,8 @@ int _print_nonprintable(char *s)
 */
 int _print_adresse(void *p)
 {
+	unsigned long int i = (unsigned long int) p;
 	if (p == NULL)
 		return (0);
-	unsigned long int i = (unsigned int) p;
-
-	_non_char(i, 'X', 0);
+	return (_num_char(i, 'X', 0));
 }
