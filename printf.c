@@ -172,7 +172,10 @@ int _print_str(char *s)
 	int i;
 
 	if (s == NULL)
-		s = ("null");
+	{
+		write(1, "(null)", 6);
+		return (-1);
+	}
 	for (i = 0; s[i]; i++)
 		write(1, &s[i], 1);
 	return (i);
