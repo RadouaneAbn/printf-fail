@@ -187,11 +187,14 @@ int _print_char(char c)
 
 int _print_str(char *s)
 {
-	int i = 0;
+	int i;
 
 	if (s == NULL)
+	{
 		write(1, "(null)", 6);
-	for (; s[i]; i++)
+		return (6);
+	}
+	for (i = 0; s[i]; i++)
 		write(1, &s[i], 1);
 	return (i);
 }
