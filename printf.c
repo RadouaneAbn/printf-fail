@@ -37,8 +37,7 @@ int _printf(const char *format, ...)
 			write(1, &format[i], 1), c++;
 		else if (format[i] == '%' && !format[i + 1])
 		{
-			write(1, &format[i], 1);
-			break;
+			return (-1);
 		}
 		else
 		{
@@ -64,19 +63,19 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
-					if (ps && tmp_d)
+					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
 					tmp_d = va_arg(args, int);
-					if (ps && tmp_d)
+					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
 					tmp_n = va_arg(args, unsigned int);
-					if (ps && tmp_n)
+					if (ps && tmp_n > 0)
 						c += write(1, "+", 1);
 					c += _num_char(tmp_n, 'u', 0);
 					break;
