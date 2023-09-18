@@ -5,14 +5,15 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int print_i(int n);
-int print_d(int n);
 int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(int n, char cs);
 int _print_char(char c);
 int _print_nonprintable(char *s);
 int _print_adresse(void *p);
+int _strlen(char *s);
+int _print_rot(char *s);
+int _print_rev(char *s);
 
 /**
  * _printf - this function prints anything
@@ -108,6 +109,14 @@ int _printf(const char *format, ...)
 				case 'p':
 					c += _print_adresse(va_arg(args, void *));
 					break;
+				case 'r':
+					s = va_arg(args, char *);
+					c += _print_rev(s);
+					break;
+				case 'R':
+					s = va_arg(args, char *);
+					c += _print_rot(s);
+					break;
 				case '%':
 					write(1, &format[i], 1);
 					c++;
@@ -125,6 +134,57 @@ int _printf(const char *format, ...)
 	}
 	va_end(args);
 	return (c);
+}
+
+/**
+ * _print_rot - this function encodes a string using rot13
+ * @s: the string
+ * Return: return the lenght of the string
+ */
+
+int _print_rot(char *s)
+{
+	int i, j;
+
+	char *rot = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char *ebg = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z'))
+			for (j = 0; j < 52; j++)
+			{
+				if (s[i] == rot[j])
+				{
+					write(1, &ebg[j], 1);
+					break;
+				}
+			}
+		else
+			write(1, &s[i], 1);
+	}
+	return (i);
+}
+
+/**
+ * _print_rev - print a string in revers
+ * @s: the string
+ * Return: return the lenght of the string
+ */
+
+int _print_rev(char *s)
+{
+	int i, l;
+
+	l = _strlen(s);
+	if (s == NULL)
+	{
+		write(1, "(null)", 6);
+		return (6);
+	}
+	for (i = l - 1; i >= 0; i--)
+		write(1, &s[i], 1);
+	return (l);
 }
 
 /**
@@ -269,4 +329,19 @@ int _print_adresse(void *p)
 	c += _num_char(i, 'x', 0);
 
 	return (c);
+}
+
+/**
+ * _strlen - this function compute the lenght of a string
+ * @s: pointer to the string
+ * Return: return the lenght of the string
+ */
+
+int _strlen(char *s)
+{
+	int i = 0;
+
+	while (s[i])
+		i++;
+	return (i);
 }
