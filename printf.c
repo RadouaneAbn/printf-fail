@@ -23,9 +23,8 @@ int _print_adresse(void *p);
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int tmp_d;
 	unsigned int tmp_n;
-	int i, c = 0;
+	int i, c = 0, ps = 0, space, tmp_d;
 	char *s;
 	char a;
 
@@ -43,7 +42,11 @@ int _printf(const char *format, ...)
 		}
 		else
 		{
-			i++;
+			i++, space = 0;
+			for (; format[i] == ' '; i++)
+				space++;
+			if (format[i] == '+' || format[i] == '#')
+				ps = 1, i++;
 			switch (format[i])
 			{
 				case 'c':
@@ -61,26 +64,38 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
+					if (ps)
+						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
 					tmp_d = va_arg(args, int);
+					if (ps)
+						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "+", 1);
 					c += _num_char(tmp_n, 'u', 0);
 					break;
 				case 'o':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "0", 1);
 					c += _num_char(tmp_n, 'o', 0);
 					break;
 				case 'x':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'x', 0);
 					break;
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'X', 0);
 					break;
 				case 'b':
@@ -95,6 +110,8 @@ int _printf(const char *format, ...)
 					c++;
 					break;
 				default:
+					while (space)
+						c += write(1, " ", 1);
 					write(1, &format[i - 1], 1);
 					write(1, &format[i], 1);
 					c += 2;
