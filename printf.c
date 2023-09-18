@@ -7,7 +7,7 @@
 
 int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
-int _num_check(int n, char cs);
+int _num_check(long int n, char cs);
 int _print_char(char c);
 int _print_nonprintable(char *s);
 int _print_adresse(void *p);
@@ -23,8 +23,10 @@ int _print_rev(char *s);
 
 int _printf(const char *format, ...)
 {
+	short int tmp_h;
+	long int tmp_l;
 	va_list args;
-	unsigned int tmp_n;
+	unsigned int tmp_u;
 	int i, c = 0, ps = 0, space, tmp_d;
 	char *s;
 	char a;
@@ -62,6 +64,13 @@ int _printf(const char *format, ...)
 					s = va_arg(args, char *);
 					c += _print_nonprintable(s);
 					break;
+				case 'h':
+					tmp_h = va_arg(args, int);
+					if (tmp_h < 0)
+					if (ps && tmp_h > 0)
+						c += write(1, "+", 1);
+					c += _num_check(tmp_h, 'h');
+					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
 					if (ps && tmp_d > 0)
@@ -75,32 +84,38 @@ int _printf(const char *format, ...)
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
-					tmp_n = va_arg(args, unsigned int);
-					if (ps && tmp_n > 0)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "+", 1);
-					c += _num_char(tmp_n, 'u', 0);
+					c += _num_char(tmp_u, 'u', 0);
+					break;
+				case 'l':
+					tmp_l = va_arg(args, long int);
+					if (ps && tmp_l > 0)
+						c += write(1, "+", 1);
+					c += _num_check(tmp_l, 'l');
 					break;
 				case 'o':
-					tmp_n = va_arg(args, unsigned int);
-					if (ps && tmp_n)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0", 1);
-					c += _num_char(tmp_n, 'o', 0);
+					c += _num_char(tmp_u, 'o', 0);
 					break;
 				case 'x':
-					tmp_n = va_arg(args, unsigned int);
-					if (ps && tmp_n)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0x", 2);
-					c += _num_char(tmp_n, 'x', 0);
+					c += _num_char(tmp_u, 'x', 0);
 					break;
 				case 'X':
-					tmp_n = va_arg(args, unsigned int);
-					if (ps && tmp_n)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0x", 2);
-					c += _num_char(tmp_n, 'X', 0);
+					c += _num_char(tmp_u, 'X', 0);
 					break;
 				case 'b':
-					tmp_n = va_arg(args, unsigned int);
-					c += _num_char(tmp_n, 'b', 0);
+					tmp_u = va_arg(args, unsigned int);
+					c += _num_char(tmp_u, 'b', 0);
 					break;
 				case 'p':
 					c += _print_adresse(va_arg(args, void *));
@@ -190,7 +205,7 @@ int _print_rev(char *s)
  * Return: the return of _num_char
  */
 
-int _num_check(int n, char cs)
+int _num_check(long int n, char cs)
 {
 	int flag = 0;
 
@@ -215,8 +230,8 @@ int _num_char(unsigned long int n, char cs, int flag)
 {
 	unsigned long int m, num;
 	int c = 0, i, bf = 0;
-	char *A, *F = "diuxXob";
-	int base[7] = {10, 10, 10, 16, 16, 8, 2};
+	char *A, *F = "hdiulxXob";
+	int base[9] = {10, 10, 10, 10, 10, 16, 16, 8, 2};
 
 	if (n == 0)
 	{
