@@ -7,7 +7,7 @@
 
 int print_i(int n);
 int print_d(int n);
-int _num_char(unsigned int n, char cs, int flag);
+int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(int n, char cs);
 int _print_char(char c);
@@ -23,9 +23,8 @@ int _print_adresse(void *p);
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int tmp_d;
 	unsigned int tmp_n;
-	int i, c = 0;
+	int i, c = 0, ps = 0, space, tmp_d;
 	char *s;
 	char a;
 
@@ -38,54 +37,69 @@ int _printf(const char *format, ...)
 			write(1, &format[i], 1), c++;
 		else if (format[i] == '%' && !format[i + 1])
 		{
-			write(1, &format[i], 1);
-			break;
+			return (-1);
 		}
 		else
 		{
-			i++;
+			i++, space = 0, ps = 0;
+			for (; format[i] == ' '; i++)
+				space++;
+			if (format[i] == '+' || format[i] == '#')
+				ps = 1, i++;
 			switch (format[i])
 			{
 				case 'c':
 					a = va_arg(args, int);
 					write(1, &a, 1);
-					c++;	
+					c++;
 					break;
 				case 's':
 					s = va_arg(args, char *);
 					c += _print_str(s);
 					break;
+				case 'S':
+					s = va_arg(args, char *);
+					c += _print_nonprintable(s);
+					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
+					if (ps && tmp_d > 0)
+						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
 					tmp_d = va_arg(args, int);
+					if (ps && tmp_d > 0)
+						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps && tmp_n > 0)
+						c += write(1, "+", 1);
 					c += _num_char(tmp_n, 'u', 0);
 					break;
 				case 'o':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps && tmp_n)
+						c += write(1, "0", 1);
 					c += _num_char(tmp_n, 'o', 0);
 					break;
 				case 'x':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps && tmp_n)
+						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'x', 0);
 					break;
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps && tmp_n)
+						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'X', 0);
 					break;
 				case 'b':
 					tmp_n = va_arg(args, unsigned int);
 					c += _num_char(tmp_n, 'b', 0);
-					break;
-				case 'S':
-					s = va_arg(args, char *);
-					c += _print_nonprintable(s);
 					break;
 				case 'p':
 					c += _print_adresse(va_arg(args, void *));
@@ -95,6 +109,8 @@ int _printf(const char *format, ...)
 					c++;
 					break;
 				default:
+					while (space)
+						c += write(1, " ", 1);
 					write(1, &format[i - 1], 1);
 					write(1, &format[i], 1);
 					c += 2;
@@ -135,9 +151,9 @@ int _num_check(int n, char cs)
  * Return: the number of characters printed
  */
 
-int _num_char(unsigned int n, char cs, int flag)
+int _num_char(unsigned long int n, char cs, int flag)
 {
-	unsigned int m, num;
+	unsigned long int m, num;
 	int c = 0, i, bf = 0;
 	char *A, *F = "diuxXob";
 	int base[7] = {10, 10, 10, 16, 16, 8, 2};
@@ -177,23 +193,6 @@ int _num_char(unsigned int n, char cs, int flag)
 }
 
 /**
- * _print_char - print a character
- * @c: the character
- * Return: 1 if char is not empty
- *	0 if else
- */
-
-int _print_char(char c)
-{
-	if (c)
-	{
-		write(1, &c, 1);
-		return (1);
-	}
-	return (0);
-}
-
-/**
  * _print_str - print an array of characters
  * @s: the array (string)
  * Return: the number of characters
@@ -201,7 +200,7 @@ int _print_char(char c)
 
 int _print_str(char *s)
 {
-	int i;
+	int i = 0;
 
 	if (s == NULL)
 	{
@@ -212,32 +211,41 @@ int _print_str(char *s)
 		write(1, &s[i], 1);
 	return (i);
 }
+
 /**
-*_print_nonprintable - print non prinable char
-*@s: non printable char
-*Return: number of  printed char
+* _print_nonprintable - print non prinable char
+* @s: non printable char
+* Return: number of  printed char
 */
 int _print_nonprintable(char *s)
 {
-	int i;
+	int i, tmp, c = 0;
 
 	if (s == NULL)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		return (write(1, "(null)", 6));
+
 	for (i = 0; s[i]; i++)
 	{
 		if (s[i] < 32 || s[i] >= 127)
 		{
-			 write(1, "\\x0", 4);
-			_num_char((unsigned int)s[i], 'X',0);
+			tmp = s[i];
+			if (tmp > 15)
+			{
+				c += write(1, "\\x", 2);
+				c += _num_char(s[i], 'X', 0);
+			}
+			else
+			{
+				c += write(1, "\\x0", 3);
+				c += _num_char(s[i], 'X', 0);
+			}
 		}
 		else
-		 	write(1, &s[i], 1);
+			c += write(1, &s[i], 1);
 	}
-	return (i);
+	return (c);
 }
+
 /**
 *_print_adresse - print the adresse
 *@p: the address memory
@@ -245,9 +253,16 @@ int _print_nonprintable(char *s)
 */
 int _print_adresse(void *p)
 {
+	int c = 0;
 	unsigned long int i = (unsigned long int) p;
 
 	if (p == NULL)
-		return (0);
-	return (_num_char(i, 'X', 0));
+	{
+		write(1, "(nil)", 5);
+		return (5);
+	}
+	c += write(1, "0x", 2);
+	c += _num_char(i, 'x', 0);
+
+	return (c);
 }
