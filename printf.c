@@ -101,7 +101,7 @@ int _printf(const char *format, ...)
 				case 'b':
 					tmp_n = va_arg(args, unsigned int);
 					if (ps)
-						c +=  write(1, "0b", 2);
+						c += write(1, "0b", 2);
 					c += _num_char(tmp_n, 'b', 0);
 					break;
 				case 'p':
