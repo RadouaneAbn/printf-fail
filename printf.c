@@ -66,16 +66,12 @@ int _printf(const char *format, ...)
 					tmp_d = va_arg(args, int);
 					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
-					else if (ps && tmp_d < 0)
-						c += write(1, "-", 1);
 					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
 					tmp_d = va_arg(args, int);
 					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
-					else if (ps && tmp_d < 0)
-						c += write(1, "-", 1);
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
@@ -104,6 +100,8 @@ int _printf(const char *format, ...)
 					break;
 				case 'b':
 					tmp_n = va_arg(args, unsigned int);
+					if (ps)
+						c +=  write(1, "0b", 2);
 					c += _num_char(tmp_n, 'b', 0);
 					break;
 				case 'p':
