@@ -64,37 +64,37 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
-					if (ps)
+					if (ps && tmp_d)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
 					tmp_d = va_arg(args, int);
-					if (ps)
+					if (ps && tmp_d)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
 					tmp_n = va_arg(args, unsigned int);
-					if (ps)
+					if (ps && tmp_n)
 						c += write(1, "+", 1);
 					c += _num_char(tmp_n, 'u', 0);
 					break;
 				case 'o':
 					tmp_n = va_arg(args, unsigned int);
-					if (ps)
+					if (ps && tmp_n)
 						c += write(1, "0", 1);
 					c += _num_char(tmp_n, 'o', 0);
 					break;
 				case 'x':
 					tmp_n = va_arg(args, unsigned int);
-					if (ps)
+					if (ps && tmp_n)
 						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'x', 0);
 					break;
 				case 'X':
 					tmp_n = va_arg(args, unsigned int);
-					if (ps)
+					if (ps && tmp_n)
 						c += write(1, "0x", 2);
 					c += _num_char(tmp_n, 'X', 0);
 					break;
