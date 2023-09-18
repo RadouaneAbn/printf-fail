@@ -42,7 +42,7 @@ int _printf(const char *format, ...)
 		}
 		else
 		{
-			i++, space = 0;
+			i++, space = 0, ps = 0;
 			for (; format[i] == ' '; i++)
 				space++;
 			if (format[i] == '+' || format[i] == '#')
