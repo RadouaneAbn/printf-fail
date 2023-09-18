@@ -168,13 +168,12 @@ int _num_char(unsigned long int n, char cs, int flag)
 	for (m = n; m; c++)
 		m /= base[bf];
 
-	A = (char *)malloc(c + flag + 1);
+	A = (char *)malloc(c + flag);
 
 	if (A == NULL)
 		return (0);
 
-	A[c + flag - 1] = '\0';
-	for (i = c + flag - 2; i >= 0; i--)
+	for (i = c + flag - 1; i >= 0; i--)
 	{
 		num = n % base[bf];
 		if (num >= 10)
