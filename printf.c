@@ -115,6 +115,8 @@ int _printf(const char *format, ...)
 					break;
 				case 'b':
 					tmp_u = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "0b", 2);
 					c += _num_char(tmp_u, 'b', 0);
 					break;
 				case 'p':
