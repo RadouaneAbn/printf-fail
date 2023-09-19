@@ -48,7 +48,7 @@ int _printf(const char *format, ...)
 			i++, space = 0, ps = 0;
 			for (; format[i] == ' '; i++, space++)
 
-			if (format[i] == '+')
+			if (format[i] == '+' || format[i] == '#')
 				ps = 1, i++;
 			else if (format[i] == 'h')
 				len_mod = 'h';
