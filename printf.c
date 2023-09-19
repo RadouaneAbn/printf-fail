@@ -1,5 +1,7 @@
 #include "main.h"
 
+int print_char(char c);
+
 /**
  * _printf - this function prints anything
  * @format: the string
@@ -48,8 +50,7 @@ int _printf(const char *format, ...)
 			{
 				case 'c':
 					a = va_arg(args, int);
-					write(1, &a, 1);
-					c++;
+					c += print_char(a);
 					break;
 				case 's':
 					s = va_arg(args, char *);
@@ -148,21 +149,14 @@ int _printf(const char *format, ...)
 	return (c);
 }
 
-
-
-
-
 /**
- * _strlen - this function compute the lenght of a string
- * @s: pointer to the string
- * Return: return the lenght of the string
+ * print_char - this function prints a character
+ * @c: the char
+ * Return: 1
  */
 
-int _strlen(char *s)
+int print_char(char c)
 {
-	int i = 0;
-
-	while (s[i])
-		i++;
-	return (i);
+	write(1, &c, 1);
+	return (1);
 }

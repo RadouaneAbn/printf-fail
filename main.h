@@ -4,8 +4,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
-int _printf(const char *format, ...);
 
+int _printf(const char *format, ...);
 int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(long int n, char cs);
