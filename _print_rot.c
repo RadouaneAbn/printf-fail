@@ -7,25 +7,24 @@
 
 int _print_rot(char *s)
 {
-        int i, j;
+	int i, j;
 
-        char *rot = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        char *ebg = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
+	char *rot = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char *ebg = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
-        for (i = 0; s[i] != '\0'; i++)
-        {
-                if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z'))
-                        for (j = 0; j < 52; j++)
-                        {
-                                if (s[i] == rot[j])
-                                {
-                                        write(1, &ebg[j], 1);
-                                        break;
-                                }
-                        }
-                else
-                        write(1, &s[i], 1);
-        }
-        return (i);
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z'))
+			for (j = 0; j < 52; j++)
+			{
+				if (s[i] == rot[j])
+				{
+					write(1, &ebg[j], 1);
+					break;
+				}
+			}
+		else
+			write(1, &s[i], 1);
+	}
+	return (i);
 }
-

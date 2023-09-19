@@ -8,13 +8,12 @@
 
 int _num_check(long int n, char cs)
 {
-        int flag = 0;
+	int flag = 0;
 
-        if (n < 0)
-        {
-                flag = 1;
-                n *= -1;
-        }
-        return (_num_char(n, cs, flag));
+	if (n < 0)
+	{
+		flag = 1;
+		n *= -1;
+	}
+	return (_num_char(n, cs, flag));
 }
-
