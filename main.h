@@ -13,6 +13,6 @@ int _print_nonprintable(char *s);
 int _print_adresse(void *p);
 int _print_rot(char *s);
 int _print_rev(char *s);
-int _strlen(char *s); 
+int _strlen(char *s);
 
 #endif
