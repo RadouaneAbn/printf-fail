@@ -26,7 +26,7 @@ int _printf(const char *format, ...)
 	long int tmp_l;
 	va_list args;
 	unsigned int tmp_u;
-	int i, c = 0, ps = 0, space;
+	int i, c = 0, ps = 0, space, field_width = 0;
 	char *s;
 	char a, len_mod;
 
@@ -46,16 +46,19 @@ int _printf(const char *format, ...)
 		{
 			len_mod = 'd';
 			i++, space = 0, ps = 0;
-			for (; format[i] == ' '; i++, space++)
+			for (; format[i] == ' '; i++)
+				space = 1;
 
 			for (; format[i] == '+' || format[i] == '#'; i++)
 				ps = 1;
 			if (format[i] == 'h')
 				len_mod = 'h', i++;
 
-			while (format[i] == ' ')
-				i++, space++;
+			for (; format[i] >= '0' && format[i] <= '9'; i++)
+				field_width = field_width * 10 + (format[i] - '0');
 
+			for (; field_width > 0; field_width--)
+				write(1, " ", 1), c++;
 			switch (format[i])
 			{
 				case 'c':
@@ -123,8 +126,6 @@ int _printf(const char *format, ...)
 					tmp_u = va_arg(args, unsigned long int);
 					if (len_mod == 'h')
 						tmp_u = (unsigned short int)tmp_u;
-					if (ps)
-						c += write(1, "0b", 2);
 					c += _num_char(tmp_u, 'b', 0);
 					break;
 				case 'p':
@@ -143,9 +144,14 @@ int _printf(const char *format, ...)
 					c++;
 					break;
 				default:
-					while (space--)
-						c += write(1, " ", 1);
-					write(1, &format[i - 1], 1);
+					write(1, "%", 1);
+					if (ps)
+					{
+					if (space)
+					{
+					c += write(1, " ", 1);
+					}
+					}
 					write(1, &format[i], 1);
 					c += 2;
 					break;
