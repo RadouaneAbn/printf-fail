@@ -5,7 +5,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int _num_char(unsigned long int n, char cs, int flag);
 int _print_str(char *s);
 int _num_check(long int n, char cs);
 int _print_char(char c);
