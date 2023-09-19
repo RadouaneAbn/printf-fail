@@ -4,7 +4,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int _print_char(char c);
 int _print_adresse(void *p);
 int _strlen(char *s);
 int _print_rot(char *s);
