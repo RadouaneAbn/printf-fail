@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 int _strlen(char *s);
-int _print_rev(char *s);
 
 /**
  * _printf - this function prints anything
