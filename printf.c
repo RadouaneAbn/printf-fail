@@ -44,16 +44,15 @@ int _printf(const char *format, ...)
 		}
 		else
 		{
+			len_mod = 'd';
 			i++, space = 0, ps = 0;
-			for (; format[i] == ' '; i++)
-				space++;
+			for (; format[i] == ' '; i++, space++)
+
 			if (format[i] == '+')
 				ps = 1, i++;
-
-			if (format[i] == 'h')
+			else if (format[i] == 'h')
 				len_mod = 'h', i++;
-
-			if (format[i] == 'l')
+			else if (format[i] == 'l')
 				len_mod = 'l', i++;
 
 			switch (format[i])
@@ -72,21 +71,17 @@ int _printf(const char *format, ...)
 					c += _print_nonprintable(s);
 					break;
 				case 'i':
-					tmp_l = va_arg(args, long int);
-/**					if (len_mod == 'h')
-					{
+					tmp_l = va_arg(args, int);
+					if (len_mod == 'h')
 						tmp_l = (short int)tmp_l;
-					}*/
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'i');
 					break;
 				case 'd':
-					tmp_l = va_arg(args, long int);
-/**					if (len_mod == 'h')
-					{
+					tmp_l = va_arg(args, int);
+					if (len_mod == 'h')
 						tmp_l = (short int)tmp_l;
-					}*/
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'd');
@@ -244,8 +239,8 @@ int _num_char(unsigned long int n, char cs, int flag)
 {
 	unsigned long int m, num;
 	int c = 0, i, bf = 0;
-	char *A, *F = "hdiulxXob";
-	int base[9] = {10, 10, 10, 10, 10, 16, 16, 8, 2};
+	char *A, *F = "diuxXob";
+	int base[9] = {10, 10, 10, 16, 16, 8, 2};
 
 	if (n == 0)
 	{
