@@ -48,10 +48,14 @@ int _printf(const char *format, ...)
 			i++, space = 0, ps = 0;
 			for (; format[i] == ' '; i++, space++)
 
-			if (format[i] == '+' || format[i] == '#')
-				ps = 1, i++;
-			else if (format[i] == 'h')
-				len_mod = 'h';
+			for (; format[i] == '+' || format[i] == '#'; i++)
+				ps = 1;
+			if (format[i] == 'h')
+				len_mod = 'h', i++;
+
+			while (format[i] == ' ')
+				i++, space++;
+
 			switch (format[i])
 			{
 				case 'c':
