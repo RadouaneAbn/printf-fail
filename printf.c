@@ -14,7 +14,6 @@ int _print_adresse(void *p);
 int _strlen(char *s);
 int _print_rot(char *s);
 int _print_rev(char *s);
-long _type_check(long int n, char c);
 
 /**
  * _printf - this function prints anything
@@ -24,19 +23,19 @@ long _type_check(long int n, char c);
 
 int _printf(const char *format, ...)
 {
+	short int tmp_h;
 	long int tmp_l;
 	va_list args;
-	unsigned long int tmp_u;
-	int i, c = 0, ps = 0, space;
+	unsigned int tmp_u;
+	int i, c = 0, ps = 0, space, tmp_d;
 	char *s;
-	char a, len_mod;
+	char a;
 
 	if (!format)
 		return (-1);
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
-		len_mod = 'd';
 		if (format[i] != '%' && format[i])
 			write(1, &format[i], 1), c++;
 		else if (format[i] == '%' && !format[i + 1])
@@ -48,16 +47,8 @@ int _printf(const char *format, ...)
 			i++, space = 0, ps = 0;
 			for (; format[i] == ' '; i++)
 				space++;
-
 			if (format[i] == '+' || format[i] == '#')
 				ps = 1, i++;
-
-			if (format[i] == 'h')
-				len_mod = 'h', i++;
-
-			if (format[i] == 'l')
-				len_mod = 'l', i++;
-
 			switch (format[i])
 			{
 				case 'c':
@@ -74,53 +65,44 @@ int _printf(const char *format, ...)
 					c += _print_nonprintable(s);
 					break;
 				case 'i':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps && (tmp_l > 0))
+					tmp_d = va_arg(args, int);
+					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
-					c += _num_check(tmp_l, 'i');
+					c += _num_check(tmp_d, 'i');
 					break;
 				case 'd':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps && tmp_l > 0)
+					tmp_d = va_arg(args, int);
+					if (ps && tmp_d > 0)
 						c += write(1, "+", 1);
-					c += _num_check(tmp_l, 'd');
+					c += _num_check(tmp_d, 'd');
 					break;
 				case 'u':
-					tmp_u = va_arg(args, unsigned long int);
-					tmp_u = _type_check(tmp_u, len_mod);
+					tmp_u = va_arg(args, unsigned int);
 					if (ps && tmp_u)
 						c += write(1, "+", 1);
 					c += _num_char(tmp_u, 'u', 0);
 					break;
 				case 'o':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps && tmp_l)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0", 1);
-					c += _num_char(tmp_l, 'o', 0);
+					c += _num_char(tmp_u, 'o', 0);
 					break;
 				case 'x':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps && tmp_l)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0x", 2);
-					c += _num_char(tmp_l, 'x', 0);
+					c += _num_char(tmp_u, 'x', 0);
 					break;
 				case 'X':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps && tmp_l)
+					tmp_u = va_arg(args, unsigned int);
+					if (ps && tmp_u)
 						c += write(1, "0x", 2);
-					c += _num_char(tmp_l, 'X', 0);
+					c += _num_char(tmp_u, 'X', 0);
 					break;
 				case 'b':
-					tmp_l = va_arg(args, long int);
-					tmp_l = _type_check(tmp_l, len_mod);
-					if (ps)
-						c += write(1, "0b", 2);
-					c += _num_char(tmp_l, 'b', 0);
+					tmp_u = va_arg(args, unsigned int);
+					c += _num_char(tmp_u, 'b', 0);
 					break;
 				case 'p':
 					c += _print_adresse(va_arg(args, void *));
@@ -150,23 +132,6 @@ int _printf(const char *format, ...)
 	}
 	va_end(args);
 	return (c);
-}
-
-/**
- * _type_check - this function checks the type of the integer (short or long)
- * @n: the integer
- * @c: the type
- * Return: the integer casted to the type we want
- */
-
-long _type_check(long int n, char c)
-{
-	if (c == 'h')
-		return ((short int)n);
-
-	else if (c == 'l')
-		return ((long int)(n));
-	return (n);
 }
 
 /**
