@@ -64,6 +64,13 @@ int _printf(const char *format, ...)
 					s = va_arg(args, char *);
 					c += _print_nonprintable(s);
 					break;
+				case 'h':
+					tmp_h = va_arg(args, int);
+					if (tmp_h < 0)
+					if (ps && tmp_h > 0)
+						c += write(1, "+", 1);
+					c += _num_check(tmp_h, 'h');
+					break;
 				case 'i':
 					tmp_d = va_arg(args, int);
 					if (ps && tmp_d > 0)
@@ -81,6 +88,12 @@ int _printf(const char *format, ...)
 					if (ps && tmp_u)
 						c += write(1, "+", 1);
 					c += _num_char(tmp_u, 'u', 0);
+					break;
+				case 'l':
+					tmp_l = va_arg(args, long int);
+					if (ps && tmp_l > 0)
+						c += write(1, "+", 1);
+					c += _num_check(tmp_l, 'l');
 					break;
 				case 'o':
 					tmp_u = va_arg(args, unsigned int);
@@ -102,6 +115,8 @@ int _printf(const char *format, ...)
 					break;
 				case 'b':
 					tmp_u = va_arg(args, unsigned int);
+					if (ps)
+						c += write(1, "0b", 2);
 					c += _num_char(tmp_u, 'b', 0);
 					break;
 				case 'p':
