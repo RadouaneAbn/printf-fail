@@ -1,11 +1,4 @@
 #include "main.h"
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdio.h>
-
-int _strlen(char *s);
 
 /**
  * _printf - this function prints anything
