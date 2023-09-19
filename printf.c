@@ -51,10 +51,7 @@ int _printf(const char *format, ...)
 			if (format[i] == '+')
 				ps = 1, i++;
 			else if (format[i] == 'h')
-				len_mod = 'h', i++;
-			else if (format[i] == 'l')
-				len_mod = 'l', i++;
-
+				len_mod = 'h';
 			switch (format[i])
 			{
 				case 'c':
@@ -122,7 +119,7 @@ int _printf(const char *format, ...)
 					tmp_u = va_arg(args, unsigned long int);
 					if (len_mod == 'h')
 						tmp_u = (unsigned short int)tmp_u;
-					if (ps)
+					if (ps && tmp_u)
 						c += write(1, "0b", 2);
 					c += _num_char(tmp_u, 'b', 0);
 					break;
