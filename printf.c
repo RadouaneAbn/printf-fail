@@ -23,13 +23,12 @@ int _print_rev(char *s);
 
 int _printf(const char *format, ...)
 {
-	short int tmp_h;
 	long int tmp_l;
 	va_list args;
 	unsigned int tmp_u;
-	int i, c = 0, ps = 0, space, tmp_d;
+	int i, c = 0, ps = 0, space;
 	char *s;
-	char a;
+	char a, len_mod;
 
 	if (!format)
 		return (-1);
@@ -49,6 +48,13 @@ int _printf(const char *format, ...)
 				space++;
 			if (format[i] == '+' || format[i] == '#')
 				ps = 1, i++;
+
+			if (format[i] == 'h')
+				len_mod = 'h', i++;
+
+			if (format[i] == 'l')
+				len_mod = 'l', i++;
+
 			switch (format[i])
 			{
 				case 'c':
@@ -64,57 +70,58 @@ int _printf(const char *format, ...)
 					s = va_arg(args, char *);
 					c += _print_nonprintable(s);
 					break;
-				case 'h':
-					tmp_h = va_arg(args, int);
-					if (tmp_h < 0)
-					if (ps && tmp_h > 0)
-						c += write(1, "+", 1);
-					c += _num_check(tmp_h, 'h');
-					break;
 				case 'i':
-					tmp_d = va_arg(args, int);
-					if (ps && tmp_d > 0)
+					tmp_l = va_arg(args, long int);
+					if (len_mod == 'h')
+						tmp_l = (short int)tmp_l;
+					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
-					c += _num_check(tmp_d, 'i');
+					c += _num_check(tmp_l, 'i');
 					break;
 				case 'd':
-					tmp_d = va_arg(args, int);
-					if (ps && tmp_d > 0)
+					tmp_l = va_arg(args, long int);
+					if (len_mod == 'h')
+						tmp_l = (short int)tmp_l;
+					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
-					c += _num_check(tmp_d, 'd');
+					c += _num_check(tmp_l, 'd');
 					break;
 				case 'u':
-					tmp_u = va_arg(args, unsigned int);
+					tmp_u = va_arg(args, unsigned long int);
+					if (len_mod == 'h')
+						tmp_u = (unsigned short int)tmp_u;
 					if (ps && tmp_u)
 						c += write(1, "+", 1);
 					c += _num_char(tmp_u, 'u', 0);
 					break;
-				case 'l':
-					tmp_l = va_arg(args, long int);
-					if (ps && tmp_l > 0)
-						c += write(1, "+", 1);
-					c += _num_check(tmp_l, 'l');
-					break;
 				case 'o':
-					tmp_u = va_arg(args, unsigned int);
+					tmp_u = va_arg(args, unsigned long int);
+					if (len_mod == 'h')
+						tmp_u = (unsigned short int)tmp_u;
 					if (ps && tmp_u)
 						c += write(1, "0", 1);
 					c += _num_char(tmp_u, 'o', 0);
 					break;
 				case 'x':
-					tmp_u = va_arg(args, unsigned int);
+					tmp_u = va_arg(args, unsigned long int);
+					if (len_mod == 'h')
+						tmp_u = (unsigned short int)tmp_u;
 					if (ps && tmp_u)
 						c += write(1, "0x", 2);
 					c += _num_char(tmp_u, 'x', 0);
 					break;
 				case 'X':
-					tmp_u = va_arg(args, unsigned int);
+					tmp_u = va_arg(args, unsigned long int);
+					if (len_mod == 'h')
+						tmp_u = (unsigned short int)tmp_u;
 					if (ps && tmp_u)
 						c += write(1, "0x", 2);
 					c += _num_char(tmp_u, 'X', 0);
 					break;
 				case 'b':
-					tmp_u = va_arg(args, unsigned int);
+					tmp_u = va_arg(args, unsigned long int);
+					if (len_mod == 'h')
+						tmp_u = (unsigned short int)tmp_u;
 					if (ps)
 						c += write(1, "0b", 2);
 					c += _num_char(tmp_u, 'b', 0);
@@ -135,7 +142,7 @@ int _printf(const char *format, ...)
 					c++;
 					break;
 				default:
-					while (space)
+					while (space--)
 						c += write(1, " ", 1);
 					write(1, &format[i - 1], 1);
 					write(1, &format[i], 1);
