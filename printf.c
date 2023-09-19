@@ -1,11 +1,9 @@
-#include "main.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 
-int _print_str(char *s);
 int _num_check(long int n, char cs);
 int _print_char(char c);
 int _print_nonprintable(char *s);
