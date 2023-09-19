@@ -35,7 +35,7 @@ int _printf(const char *format, ...)
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
-		len_mod = 'd';
+		len_mod = 'd', ps = 0;
 		if (format[i] != '%' && format[i])
 			write(1, &format[i], 1), c++;
 		else if (format[i] == '%' && !format[i + 1])
@@ -47,7 +47,7 @@ int _printf(const char *format, ...)
 			i++, space = 0, ps = 0;
 			for (; format[i] == ' '; i++)
 				space++;
-			if (format[i] == '+' || format[i] == '#')
+			if (format[i] == '+')
 				ps = 1, i++;
 
 			if (format[i] == 'h')
@@ -74,7 +74,9 @@ int _printf(const char *format, ...)
 				case 'i':
 					tmp_l = va_arg(args, long int);
 					if (len_mod == 'h')
+					{
 						tmp_l = (short int)tmp_l;
+					}
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'i');
@@ -82,7 +84,9 @@ int _printf(const char *format, ...)
 				case 'd':
 					tmp_l = va_arg(args, long int);
 					if (len_mod == 'h')
+					{
 						tmp_l = (short int)tmp_l;
+					}
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'd');
