@@ -73,20 +73,20 @@ int _printf(const char *format, ...)
 					break;
 				case 'i':
 					tmp_l = va_arg(args, long int);
-					if (len_mod == 'h')
+/**					if (len_mod == 'h')
 					{
 						tmp_l = (short int)tmp_l;
-					}
+					}*/
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'i');
 					break;
 				case 'd':
 					tmp_l = va_arg(args, long int);
-					if (len_mod == 'h')
+/**					if (len_mod == 'h')
 					{
 						tmp_l = (short int)tmp_l;
-					}
+					}*/
 					if (ps && tmp_l > 0)
 						c += write(1, "+", 1);
 					c += _num_check(tmp_l, 'd');
