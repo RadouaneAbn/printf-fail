@@ -35,6 +35,7 @@ int _printf(const char *format, ...)
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
+		len_mod = 'd';
 		if (format[i] != '%' && format[i])
 			write(1, &format[i], 1), c++;
 		else if (format[i] == '%' && !format[i + 1])
