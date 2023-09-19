@@ -1,3 +1,4 @@
+#include "main.h"
 /**
 * _print_nonprintable - print non prinable char
 * @s: non printable char

@@ -1,4 +1,5 @@
 #include "main.h"
+#include "main.h"
 
 /**
  * _num_char - convert a unsigned integer to string

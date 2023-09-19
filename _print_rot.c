@@ -1,3 +1,4 @@
+#include "main.h"
 /**
  * _print_rot - this function encodes a string using rot13
  * @s: the string

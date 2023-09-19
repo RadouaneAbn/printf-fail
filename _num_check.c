@@ -1,3 +1,4 @@
+#include "main.h"
 /**
  * _num_check - convert a negative number to positive
  * @n: the number

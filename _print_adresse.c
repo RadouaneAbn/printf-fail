@@ -1,3 +1,4 @@
+#include "main.h"
 /**
 *_print_adresse - print the adresse
 *@p: the address memory
