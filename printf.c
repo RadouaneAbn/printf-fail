@@ -4,7 +4,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-int _num_check(long int n, char cs);
 int _print_char(char c);
 int _print_nonprintable(char *s);
 int _print_adresse(void *p);
