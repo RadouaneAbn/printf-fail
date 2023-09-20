@@ -4,7 +4,8 @@
 &emsp;&emsp;&emsp;	* Radouane Abounouas  
 &emsp;&emsp;&emsp;	* Errafai Achraf  
 
-### info:
+### info:  
+
 * **This a project made by ALX-SE.**  
 * this project is a collaboration between [radouane abounouas](https://github.com/RadouaneAbn) and [errafai achraf](https://github.com/Errafai).  
 * and in it we made our own **printf** with variety of conversion specifiers like "%s, %d, %x and more".  
